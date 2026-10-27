@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { HeroVideo } from '@/components/HeroVideo';
 import { Photo } from '@/components/Photo';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
@@ -41,7 +42,7 @@ export default function Home() {
       <SiteHeader />
       <main id="main">
         <section className="hero">
-          <div className="hero__media"><Photo slot="hero" priority /></div>
+          <div className="hero__media"><Photo slot="hero" priority tag={false} /><HeroVideo /></div>
           <h1 className="hero__mark">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/img/logo/fauve-wordmark-white.svg" alt="FAUVE" />
@@ -52,7 +53,8 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="band band--umber">
+        <section className="band band--umber band--photo">
+          <div className="band__media"><Photo slot="statement" tag={false} /></div>
           <div className="statement reveal">
             <p className="display">Scent is more than a product. It is a story that stays.</p>
             <p className="body-lg muted">

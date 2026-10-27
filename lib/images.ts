@@ -7,9 +7,10 @@ export type Slot = { tone: Tone; src?: string; alt: string; note: string };
 export const SLOTS = {
   hero: { tone: 'canyon', alt: 'Warm canyon light falling across tawny stone', note: 'Canyon light' },
   story: { tone: 'driftwood', alt: 'Weathered driftwood in soft light', note: 'Driftwood' },
-  bar: { tone: 'dusk', alt: 'A perfume bar glowing at dusk', note: 'Perfume bar at dusk' },
-  manufacturing: { tone: 'amber', alt: 'Amber glass bottles in warm light', note: 'Amber glass' },
-  finder: { tone: 'dune', alt: 'Sunlit dune grass', note: 'Dune grass' },
+  statement: { tone: 'amber', src: '/img/photo/statement.jpg', alt: 'Perfume bottles on travertine in a shaft of light', note: 'Bottles in light' },
+  bar: { tone: 'dusk', src: '/img/photo/bar.jpg', alt: 'A perfume bar glowing at dusk', note: 'Perfume bar at dusk' },
+  manufacturing: { tone: 'amber', src: '/img/photo/manufacturing.jpg', alt: 'Amber glass bottles in warm light', note: 'Amber glass' },
+  finder: { tone: 'dune', src: '/img/photo/finder.jpg', alt: 'Sunlit dune grass', note: 'Dune grass' },
   earth: { tone: 'stone', alt: 'Stacked river stones', note: 'Earth' },
   wood: { tone: 'driftwood', alt: 'A length of driftwood', note: 'Wood' },
   light: { tone: 'canyon', alt: 'A shaft of light in a cave', note: 'Light' },
