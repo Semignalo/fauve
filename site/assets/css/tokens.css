@@ -1,0 +1,53 @@
+/* FAUVE — generated from the design system tokens.json. Regenerate rather than edit. */
+:root, [data-theme="light"] {
+  --stone: #e5e3db;
+  --sand: #e9ddc6;
+  --terracotta: #a05034;
+  --terracotta-ink: #994b30;
+  --olive: #747b4d;
+  --charcoal: #1d1d1d;
+  --charcoal-soft: #57534a;
+  --white: #ffffff;
+  --scrim: rgba(29, 29, 29, 0.52);
+  --dune-light: #e1d7c9;
+  --dune-dark: #757a6b;
+}
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --space-10: 128px;
+  --space-11: 160px;
+  --space-12: 200px;
+  --radius-none: 0;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --grid-columns: 12;
+  --page-max: 1440px;
+  --measure: 62ch;
+  --split-major: 60%;
+  --split-minor: 40%;
+  --hairline: 1px;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+}
+.display-xl { font-family: var(--font-sans); font-size: 96px; line-height: 0.95; font-weight: 300; }
+.display { font-family: var(--font-sans); font-size: 72px; line-height: 1; font-weight: 300; }
+.h1 { font-family: var(--font-sans); font-size: 56px; line-height: 1.1; font-weight: 300; }
+.h2 { font-family: var(--font-sans); font-size: 40px; line-height: 1.2; font-weight: 300; }
+.h3 { font-family: var(--font-sans); font-size: 24px; line-height: 1.35; font-weight: 400; }
+.body-lg { font-family: var(--font-sans); font-size: 20px; line-height: 1.7; font-weight: 400; }
+.body { font-family: var(--font-sans); font-size: 18px; line-height: 1.7; font-weight: 400; }
+.body-sm { font-family: var(--font-sans); font-size: 16px; line-height: 1.6; font-weight: 400; }
+.label { font-family: var(--font-sans); font-size: 13px; line-height: 1.2; font-weight: 500; letter-spacing: 0.16em; }
+.label-sm { font-family: var(--font-sans); font-size: 12px; line-height: 1.2; font-weight: 500; letter-spacing: 0.2em; }
+.display-m { font-family: var(--font-sans); font-size: 40px; line-height: 1.05; font-weight: 300; }
+.h1-m { font-family: var(--font-sans); font-size: 32px; line-height: 1.15; font-weight: 300; }
+.h2-m { font-family: var(--font-sans); font-size: 26px; line-height: 1.25; font-weight: 300; }
+.h3-m { font-family: var(--font-sans); font-size: 20px; line-height: 1.4; font-weight: 400; }
+.body-m { font-family: var(--font-sans); font-size: 17px; line-height: 1.65; font-weight: 400; }

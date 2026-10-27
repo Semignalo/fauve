@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Find your scent — FAUVE</title>
+<meta name="description" content="Six questions about how you feel and what you love, and three FAUVE scents that fit.">
+<link rel="icon" type="image/svg+xml" href="assets/img/logo/fauve-monogram-black.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/components.css">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body data-theme="light">
+<a class="skip" href="#finder-stage">Skip to content</a>
+<div class="finder">
+  <div class="finder__bar">
+    <div class="finder__nav">
+      <button class="finder__back label-sm" id="finder-back" type="button"><img src="assets/img/icons/arrow-left.svg" alt="">Back</button>
+      <a href="index.html" aria-label="FAUVE, home"><img src="assets/img/logo/fauve-wordmark-black.svg" alt=""></a>
+      <a class="label-sm fv-link" href="index.html">Close</a>
+    </div>
+    <div class="fv-progress" role="progressbar" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0" aria-label="Question 1 of 6"><span class="fv-progress__fill" style="width:0%"></span></div>
+  </div>
+  <main id="finder-stage" class="finder__stage" aria-live="polite"></main>
+</div>
+<script src="data/contact.js"></script>
+<script src="data/scents.js"></script>
+<script src="data/finder.js"></script>
+<script src="assets/js/site.js"></script>
+<script src="assets/js/finder.js"></script>
+</body>
+</html>
