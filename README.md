@@ -18,7 +18,9 @@ Nothing on the site is invented. Where content does not exist yet, the page says
 |---|---|---|
 | Contact details | `data/contact.ts` | `inputs/3-contact.md` |
 | Packages and prices | `data/packages.ts` | `inputs/2-services-and-pricing.md` |
-| Scent catalogue | `inputs/1-scents.csv`, then `npm run scents` | |
+| Scent catalogue | `inputs/1-scents.csv`, then `npm run scents` | Cheat sheet (`Z:\FAUVE\Cheat Sheet`), via `scripts/cheatsheet-to-csv.py` |
+
+The cheat sheet only lists ingredients and percentages. `scripts/cheatsheet-to-csv.py` derives family, moods, places, time, intensity and top/heart/base from a fixed ingredient table and overwrites the CSV, so correct the table there rather than the CSV. Percentages stay out of the site. Needs `pip install openpyxl`.
 
 Until `whatsapp` has a number, WhatsApp buttons are hidden or disabled. The Scent Finder needs at least three scents; until then it collects answers and offers to send them over WhatsApp.
 
