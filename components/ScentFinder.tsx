@@ -7,16 +7,25 @@ import { scents } from '@/data/scents';
 import { waLink } from '@/data/contact';
 import { labelOf, topThree, whySentence, type Answers } from '@/lib/match';
 import { Photo } from './Photo';
-import { LEGACY_TONE } from '@/lib/images';
 
 /* Step -1 is the intro, 0..n-1 are the questions, n is the short pause, n+1 shows the results. */
-const FAMILY_IMG: Record<string, string> = {
-  woody: '/img/photo/ingredient-oud.jpg',
-  floral: '/img/photo/ingredient-lavender.jpg',
-  gourmand: '/img/photo/ingredient-coffee.jpg',
-  amber: '/img/photo/ingredient-vanilla.jpg',
-  fresh: '/img/photo/campaign-leaf.jpg',
+/* Each family has a few photographs. A result takes one by its position, so three scents
+   from the same family never show the same picture. */
+const FAMILY_IMG: Record<string, string[]> = {
+  woody: ['/img/finder/oud.jpg', '/img/photo/wood.jpg', '/img/photo/earth.jpg', '/img/photo/light.jpg'],
+  floral: ['/img/finder/lavender.jpg', '/img/photo/vision.jpg', '/img/finder/morning.jpg', '/img/finder/afternoon.jpg'],
+  gourmand: ['/img/finder/coffee.jpg', '/img/finder/vanilla.jpg', '/img/photo/contact.jpg', '/img/photo/fur.jpg'],
+  amber: ['/img/finder/vanilla.jpg', '/img/finder/dusk.jpg', '/img/photo/contact.jpg', '/img/finder/afternoon.jpg'],
+  fresh: ['/img/finder/forest.jpg', '/img/finder/coast.jpg', '/img/finder/morning.jpg', '/img/photo/earth.jpg'],
 };
+
+function resultImage(family: string, id: string, k: number): string | undefined {
+  const pool = FAMILY_IMG[family];
+  if (!pool) return undefined;
+  let h = 0;
+  for (const c of id) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  return pool[(h + k) % pool.length];
+}
 
 export function ScentFinder() {
   const [step, setStep] = useState(-1);
@@ -170,7 +179,7 @@ function Question({
               />
               <span className="fv-opt__media">
                 {o.image ? (
-                  <Photo tone={LEGACY_TONE[o.image] ?? 'sand'} tag={false} priority={k < 4} />
+                  <Photo src={o.image} tone="sand" tag={false} priority={k < 4} />
                 ) : (
                   <span className={`tint tint--${o.tint ?? 'sand'}`} />
                 )}
@@ -231,13 +240,13 @@ function Results({ answers, onAgain }: { answers: Answers; onAgain: () => void }
       <p className="label-sm muted">Your scent profile</p>
       <h1 className="h1">Three scents for your story.</h1>
       <div className="results">
-        {top.map((m) => {
+        {top.map((m, k) => {
           const sc = m.scent;
           const rows: [string, string][] = [['Top', sc.top], ['Heart', sc.heart], ['Base', sc.base]];
           return (
             <article className="fv-result" key={sc.id}>
               <div className="fv-result__media">
-                <Photo tone={LEGACY_TONE[sc.image || FAMILY_IMG[sc.family]] ?? 'stone'} tag={false} />
+                <Photo src={sc.image || resultImage(sc.family, sc.id, k)} tone="stone" tag={false} />
               </div>
               <h2 className="fv-result__name h3">{sc.name}</h2>
               <dl className="fv-result__notes body-sm">
