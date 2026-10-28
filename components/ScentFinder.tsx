@@ -86,7 +86,7 @@ export function ScentFinder() {
         {step === n && (
           <section className="screen screen--loading" role="status">
             <div className="breath" />
-            <h2 className="h2">Reading your scent profile</h2>
+            <h2 className="h2">Finding your scents</h2>
           </section>
         )}
         {step === n + 1 && <Results answers={answers} onAgain={reset} />}
@@ -95,14 +95,14 @@ export function ScentFinder() {
   );
 }
 
-const WORDS: Record<number, string> = { 4: 'Four', 5: 'Five', 6: 'Six', 7: 'Seven', 8: 'Eight' };
+const WORDS: Record<number, string> = { 4: 'Four', 5: 'Five', 6: 'Six', 7: 'Seven', 8: 'Eight', 9: 'Nine', 10: 'Ten', 11: 'Eleven', 12: 'Twelve', 13: 'Thirteen' };
 
 function Intro({ onBegin }: { onBegin: () => void }) {
   return (
     <section className="screen screen--intro">
-      <h1 className="display">A scent that tells your story.</h1>
+      <h1 className="display">Find your scent.</h1>
       <p className="body-lg">
-        {WORDS[Q.length] ?? Q.length} short questions about how you feel, where you belong and what you love. There are no wrong answers, and nothing to type.
+        Answer {(WORDS[Q.length] ?? String(Q.length)).toLowerCase()} quick questions and we will pick three scents for you. Just tap your answers. There is nothing to type.
       </p>
       <div className="screen__actions">
         <button className="fv-btn fv-btn--primary" type="button" onClick={onBegin}>
@@ -121,17 +121,35 @@ function Question({
 }: {
   index: number;
   answers: Answers;
-  onAnswer: (key: (typeof Q)[number]['key'], value: string) => void;
+  onAnswer: (key: (typeof Q)[number]['key'], value: string | string[]) => void;
   onNext: () => void;
 }) {
   const q = Q[index];
   const moved = useRef(false);
   const current = answers[q.key];
+  const picked = ([] as (string | undefined)[]).concat(current);
+  const ready = picked.some(Boolean);
+  const toggle = (value: string) => {
+    const set = picked.filter((v): v is string => !!v);
+    onAnswer(q.key, set.includes(value) ? set.filter((v) => v !== value) : [...set, value]);
+  };
 
   const go = () => {
     if (moved.current) return;
     moved.current = true;
     onNext();
+  };
+
+  /* A tap on a single-choice answer moves on after a short beat so the check mark shows.
+     Keyboard users change radios with the arrow keys (a click with detail 0), so they
+     keep using the Next button and are never pushed past a question by accident. */
+  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  useEffect(() => () => clearTimeout(timer.current), []);
+  const advance = (e: React.MouseEvent<HTMLInputElement>, value: string) => {
+    if (q.multi || e.detail === 0) return;
+    onAnswer(q.key, value);
+    clearTimeout(timer.current);
+    timer.current = setTimeout(go, 220);
   };
 
   return (
@@ -151,11 +169,12 @@ function Question({
             >
               <input
                 className="fv-opt__input"
-                type="radio"
+                type={q.multi ? 'checkbox' : 'radio'}
                 name={q.key}
                 value={o.value}
-                checked={current === o.value}
-                onChange={() => onAnswer(q.key, o.value)}
+                checked={picked.includes(o.value)}
+                onChange={() => (q.multi ? toggle(o.value) : onAnswer(q.key, o.value))}
+                onClick={(e) => advance(e, o.value)}
               />
               <span className="fv-opt__media">
                 {o.image ? (
@@ -175,7 +194,7 @@ function Question({
         </div>
       </fieldset>
       <div className="screen__actions">
-        <button className="fv-btn fv-btn--primary" type="button" disabled={!current} onClick={go}>
+        <button className="fv-btn fv-btn--primary" type="button" disabled={!ready} onClick={go}>
           {index === Q.length - 1 ? 'See my scents' : 'Next'}
         </button>
       </div>
@@ -192,9 +211,9 @@ function Results({ answers, onAgain }: { answers: Answers; onAgain: () => void }
     return (
       <section className="screen">
         <div className="results__empty">
-          <h1 className="h1">Our scent library is still being written.</h1>
+          <h1 className="h1">Our scent list is not ready yet.</h1>
           <p className="body-lg">
-            Your answers are saved for this visit. Share them with us and we will choose three for you by hand.
+            Send us your answers and we will pick three scents for you.
           </p>
           <div className="screen__actions">
             {href ? (
@@ -219,7 +238,7 @@ function Results({ answers, onAgain }: { answers: Answers; onAgain: () => void }
   const choices = top.map((m) => ({ id: m.scent.id, name: m.scent.name, family: m.scent.family }));
   return (
     <section className="screen">
-      <h1 className="h1">Three scents for your story.</h1>
+      <h1 className="h1">Your top three scents.</h1>
       <div className="results">
         {top.map((m, k) => {
           const sc = m.scent;
@@ -251,12 +270,12 @@ function Results({ answers, onAgain }: { answers: Answers; onAgain: () => void }
       </div>
       <div className="screen__actions">
         <button className="fv-btn fv-btn--primary" type="button" onClick={() => setOrder(top[0].scent.id)}>
-          Order
+          Order my top pick
         </button>
         <button className="fv-btn fv-btn--secondary" type="button" onClick={onAgain}>
           Start again
         </button>
-        <Link className="fv-link fv-result__shop" href="/shop">Or browse the shop</Link>
+        <Link className="fv-link fv-result__shop" href="/shop">Browse the shop</Link>
       </div>
       <OrderForm open={order !== null} onClose={closeOrder} choices={choices} preselect={order ?? undefined} source="finder" />
     </section>

@@ -9,9 +9,9 @@ export type Concentration = (typeof CONCENTRATIONS)[number];
 
 /** One line under each concentration in the order form. */
 export const CONCENTRATION_NOTE: Record<Concentration, string> = {
-  EDP: 'Light and easy, for every day',
-  'Extrait 30': 'Deeper, stays through the day',
-  'Extrait 50': 'The richest, lingers longest',
+  EDP: 'Light and easy, for every day. Usually 6 to 8 hours',
+  'Extrait 30': 'Deeper, stays through the day. Usually 8 to 12 hours',
+  'Extrait 50': 'The richest, lingers longest. Usually 8 to 12 hours',
 };
 
 /** Retail price per bottle in IDR. Placeholder numbers. */
