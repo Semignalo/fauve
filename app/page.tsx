@@ -69,13 +69,11 @@ export default function Home() {
 
         <section className="doors" aria-label="What we do">
           <Link className="door" href="/shop">
-            <span className="label-sm door__eyebrow">For you</span>
             <span className="h2 door__title">A scent of your own.</span>
             <span className="body-sm door__text">Shop ready-made scents, find yours in six questions, or book a perfume bar for your event.</span>
             <span className="link">Shop now</span>
           </Link>
           <Link className="door door--brand" href="/manufacturing">
-            <span className="label-sm door__eyebrow">For brands · Private label</span>
             <span className="h2 door__title">Your perfume brand, made by FAUVE.</span>
             <span className="body-sm door__text">
               Formula, bottle, box and label, from {MOQ} pieces. From {formatIDR(FROM_PRICE)} per bottle.
@@ -130,7 +128,6 @@ export default function Home() {
         <section className="band band--stone">
           <div className="mfg reveal">
             <div className="mfg__head">
-              <p className="label-sm">Private label manufacturing</p>
               <h2 className="display">Launch your own scent.</h2>
               <p className="body-lg">
                 We make perfume under your name, for brands, creators, companies and occasions. You bring the story; we return finished bottles, ready to sell or give.

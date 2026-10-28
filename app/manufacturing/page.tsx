@@ -70,7 +70,6 @@ export default function Manufacturing() {
       <SiteHeader />
       <main id="main">
         <section className="page-head band--umber"><div className="wrap reveal">
-          <p className="label-sm muted">Private label manufacturing</p>
           <h1 className="h1">Your perfume brand, made by FAUVE.</h1>
           <p className="body-lg muted">
             We develop, fill and finish perfume under your name. Formula, bottle, box, label and stickering included, from {MOQ} pieces.
@@ -168,7 +167,6 @@ export default function Manufacturing() {
         <section className="band band--umber" id="brief">
           <div className="cols cols--offset">
             <div className="pair-text reveal">
-              <p className="label-sm muted">Start your brand</p>
               <h2 className="h1">Tell us about it.</h2>
               <p className="body muted">Choose a size and strength for an estimate. We reply on WhatsApp with samples and a final quote.</p>
             </div>

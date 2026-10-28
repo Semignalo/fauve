@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { NAV } from '@/lib/site';
+import { useFocusTrap } from './useFocusTrap';
 
 /** Fixed header: menu word at left, wordmark centred, scent finder at right. Turns solid once the page scrolls. */
 export function SiteHeader() {
@@ -10,6 +11,8 @@ export function SiteHeader() {
   const [solid, setSolid] = useState(false);
   const menuBtn = useRef<HTMLButtonElement>(null);
   const closeBtn = useRef<HTMLButtonElement>(null);
+  const menuBox = useRef<HTMLDivElement>(null);
+  useFocusTrap(menuBox, open);
 
   useEffect(() => {
     const onScroll = () => setSolid(window.scrollY > 40);
@@ -56,13 +59,13 @@ export function SiteHeader() {
           </Link>
           <div className="fv-nav__cta">
             <Link href="/shop">Shop</Link>
-            <Link className="long" href="/find-your-scent">
+            <Link href="/find-your-scent">
               Find <span className="long">your </span>scent
             </Link>
           </div>
         </header>
       </div>
-      <div className="fv-menu" id="site-menu" role="dialog" aria-modal="true" aria-label="Menu" hidden={!open}>
+      <div ref={menuBox} className="fv-menu" id="site-menu" role="dialog" aria-modal="true" aria-label="Menu" hidden={!open}>
         <div className="fv-menu__top">
           <button
             ref={closeBtn}

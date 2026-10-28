@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: { default: 'FAUVE — Fragrance tells your story', template: '%s — FAUVE' },
   description:
     'FAUVE is a fragrance house and manufacturing partner. Bespoke perfume bars for events and brands, and fragrance made to be remembered.',
-  openGraph: { siteName: 'FAUVE', type: 'website', locale: 'en', images: [] },
+  openGraph: { siteName: 'FAUVE', type: 'website', locale: 'en', images: [{ url: '/img/og.jpg', width: 1200, height: 630, alt: 'FAUVE, fragrance tells your story' }] },
 };
 
 export const viewport: Viewport = { themeColor: '#16110E', width: 'device-width', initialScale: 1 };

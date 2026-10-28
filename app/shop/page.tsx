@@ -22,7 +22,6 @@ export default function Shop() {
       <SiteHeader />
       <main id="main">
         <section className="page-head band--umber"><div className="wrap reveal">
-          <p className="label-sm muted">Shop</p>
           <h1 className="h1">Ready to wear.</h1>
           <p className="body-lg muted">
             Ten of our most loved scents. Choose the size and the strength, and we bottle it for you.

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { waLink } from '@/data/contact';
+import { useFocusTrap } from './useFocusTrap';
 import { CONCENTRATIONS, CONCENTRATION_NOTE, SIZES, formatIDR, priceOf, type Concentration, type Size } from '@/data/shop';
 
 export type OrderChoice = { id: string; name: string; family: string };
@@ -26,6 +27,8 @@ export function OrderForm({ open, onClose, choices, preselect, source }: Props) 
   const [invalid, setInvalid] = useState<string[]>([]);
   const closeBtn = useRef<HTMLButtonElement>(null);
   const opener = useRef<Element | null>(null);
+  const panel = useRef<HTMLDivElement>(null);
+  useFocusTrap(panel, open);
 
   useEffect(() => {
     if (preselect) setScent(preselect);
@@ -84,7 +87,7 @@ export function OrderForm({ open, onClose, choices, preselect, source }: Props) 
   return (
     <div className="fv-order" hidden={!open}>
       <div className="fv-order__scrim" onClick={onClose} aria-hidden="true" />
-      <div className="fv-order__panel" role="dialog" aria-modal="true" aria-labelledby="order-title">
+      <div ref={panel} className="fv-order__panel" role="dialog" aria-modal="true" aria-labelledby="order-title">
         <div className="fv-order__top">
           <p className="label-sm muted">Order</p>
           <button ref={closeBtn} className="fv-order__close" type="button" aria-label="Close order form" onClick={onClose}>
@@ -100,15 +103,18 @@ export function OrderForm({ open, onClose, choices, preselect, source }: Props) 
             <legend className="label-sm">Your details</legend>
             <div className="fv-field">
               <label className="fv-field__label label-sm" htmlFor="o-name">Name</label>
-              <input className="fv-field__input" id="o-name" name="name" type="text" autoComplete="name" required aria-invalid={bad('name')} />
+              <input className="fv-field__input" id="o-name" name="name" type="text" autoComplete="name" required aria-invalid={bad('name')} aria-describedby={bad('name') ? 'o-name-err' : undefined} />
+              {bad('name') && <p className="fv-field__error body-sm" id="o-name-err">Please tell us your name.</p>}
             </div>
             <div className="fv-field">
               <label className="fv-field__label label-sm" htmlFor="o-phone">WhatsApp number</label>
-              <input className="fv-field__input" id="o-phone" name="phone" type="tel" inputMode="tel" autoComplete="tel" placeholder="08..." required aria-invalid={bad('phone')} />
+              <input className="fv-field__input" id="o-phone" name="phone" type="tel" inputMode="tel" autoComplete="tel" placeholder="08..." required aria-invalid={bad('phone')} aria-describedby={bad('phone') ? 'o-phone-err' : undefined} />
+              {bad('phone') && <p className="fv-field__error body-sm" id="o-phone-err">Please add the WhatsApp number we can reach you on.</p>}
             </div>
             <div className="fv-field">
               <label className="fv-field__label label-sm" htmlFor="o-address">Delivery address</label>
-              <textarea className="fv-field__input" id="o-address" name="address" rows={2} autoComplete="street-address" required aria-invalid={bad('address')} />
+              <textarea className="fv-field__input" id="o-address" name="address" rows={2} autoComplete="street-address" required aria-invalid={bad('address')} aria-describedby={bad('address') ? 'o-address-err' : undefined} />
+              {bad('address') && <p className="fv-field__error body-sm" id="o-address-err">Please add the address we should deliver to.</p>}
             </div>
           </fieldset>
 

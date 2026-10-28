@@ -29,7 +29,7 @@ export function ScentFinder() {
   useEffect(() => {
     if (step !== n) return;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const t = setTimeout(() => setStep(n + 1), reduce ? 300 : 2200);
+    const t = setTimeout(() => setStep(n + 1), reduce ? 300 : 1400);
     return () => clearTimeout(t);
   }, [step, n]);
 
@@ -72,7 +72,7 @@ export function ScentFinder() {
         </div>
       </div>
 
-      <main id="finder-stage" className="finder__stage" aria-live="polite" ref={stage}>
+      <main id="finder-stage" className="finder__stage" ref={stage}>
         {step === -1 && <Intro onBegin={() => setStep(0)} />}
         {step >= 0 && step < n && (
           <Question
@@ -95,13 +95,14 @@ export function ScentFinder() {
   );
 }
 
+const WORDS: Record<number, string> = { 4: 'Four', 5: 'Five', 6: 'Six', 7: 'Seven', 8: 'Eight' };
+
 function Intro({ onBegin }: { onBegin: () => void }) {
   return (
     <section className="screen screen--intro">
-      <p className="label-sm muted">Find your scent</p>
       <h1 className="display">A scent that tells your story.</h1>
       <p className="body-lg">
-        Six short questions about how you feel, where you belong and what you love. There are no wrong answers, and nothing to type.
+        {WORDS[Q.length] ?? Q.length} short questions about how you feel, where you belong and what you love. There are no wrong answers, and nothing to type.
       </p>
       <div className="screen__actions">
         <button className="fv-btn fv-btn--primary" type="button" onClick={onBegin}>
@@ -137,7 +138,7 @@ function Question({
     <section className="screen">
       <fieldset>
         <legend>
-          <span className="label-sm">
+          <span className="sr-only">
             {q.eyebrow} · {index + 1} of {Q.length}
           </span>
           <span className="h1">{q.question}</span>
@@ -147,11 +148,6 @@ function Question({
             <label
               key={o.value}
               className="fv-opt"
-              onClick={(e) => {
-                /* A click (not an arrow key) moves on by itself after a short pause. */
-                if (e.detail === 0) return;
-                setTimeout(go, 450);
-              }}
             >
               <input
                 className="fv-opt__input"
@@ -196,7 +192,6 @@ function Results({ answers, onAgain }: { answers: Answers; onAgain: () => void }
     return (
       <section className="screen">
         <div className="results__empty">
-          <p className="label-sm muted">Your scent profile</p>
           <h1 className="h1">Our scent library is still being written.</h1>
           <p className="body-lg">
             Your answers are saved for this visit. Share them with us and we will choose three for you by hand.
@@ -224,7 +219,6 @@ function Results({ answers, onAgain }: { answers: Answers; onAgain: () => void }
   const choices = top.map((m) => ({ id: m.scent.id, name: m.scent.name, family: m.scent.family }));
   return (
     <section className="screen">
-      <p className="label-sm muted">Your scent profile</p>
       <h1 className="h1">Three scents for your story.</h1>
       <div className="results">
         {top.map((m, k) => {

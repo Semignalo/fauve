@@ -48,11 +48,13 @@ export function MfgForm() {
     <form className="fv-form" noValidate onSubmit={onSubmit}>
       <div className="fv-field">
         <label className="fv-field__label label-sm" htmlFor="m-name">Name</label>
-        <input className="fv-field__input" id="m-name" name="name" type="text" autoComplete="name" required aria-invalid={bad('name')} />
+        <input className="fv-field__input" id="m-name" name="name" type="text" autoComplete="name" required aria-invalid={bad('name')} aria-describedby={bad('name') ? 'm-name-err' : undefined} />
+        {bad('name') && <p className="fv-field__error body-sm" id="m-name-err">Please tell us your name.</p>}
       </div>
       <div className="fv-field">
         <label className="fv-field__label label-sm" htmlFor="m-phone">WhatsApp number</label>
-        <input className="fv-field__input" id="m-phone" name="phone" type="tel" inputMode="tel" autoComplete="tel" required aria-invalid={bad('phone')} />
+        <input className="fv-field__input" id="m-phone" name="phone" type="tel" inputMode="tel" autoComplete="tel" required aria-invalid={bad('phone')} aria-describedby={bad('phone') ? 'm-phone-err' : undefined} />
+        {bad('phone') && <p className="fv-field__error body-sm" id="m-phone-err">Please add the WhatsApp number we can reach you on.</p>}
       </div>
       <div className="fv-field">
         <label className="fv-field__label label-sm" htmlFor="m-brand">Brand or company</label>

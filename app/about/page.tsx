@@ -28,10 +28,9 @@ export default function About() {
 
         <section className="band band--sand">
           <div className="statement reveal">
-            <p className="label-sm">FAUVE /fohv/</p>
             <h2 className="display">The colours of earth, wood, light and fur.</h2>
             <p className="body-lg">
-              In French, fauve refers to the tawny and fawn tones found in nature. Inspired by the stories of nature, FAUVE exists to express the stories of people through scent — a way of translating a story that cannot be said, yet can remain felt after the moment has passed.
+              FAUVE, said /fohv/. In French, fauve refers to the tawny and fawn tones found in nature. Inspired by the stories of nature, FAUVE exists to express the stories of people through scent — a way of translating a story that cannot be said, yet can remain felt after the moment has passed.
             </p>
           </div>
         </section>
@@ -51,12 +50,10 @@ export default function About() {
         <section className="band band--umber">
           <div className="cols cols--2">
             <div className="pair-text reveal">
-              <p className="label-sm muted">Vision</p>
-              <p className="h2">To make the meaningful linger through scent.</p>
+              <p className="h2"><span className="muted">Our vision. </span>To make the meaningful linger through scent.</p>
             </div>
             <div className="pair-text reveal">
-              <p className="label-sm muted">Mission</p>
-              <p className="h2">We create thoughtful fragrances and experiences that transform stories, identities and moments into scents worth remembering.</p>
+              <p className="h2"><span className="muted">Our mission. </span>We create thoughtful fragrances and experiences that transform stories, identities and moments into scents worth remembering.</p>
             </div>
           </div>
         </section>

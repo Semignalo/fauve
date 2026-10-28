@@ -31,7 +31,8 @@ export function InquiryForm() {
     <form className="fv-form" id="inquiry" noValidate onSubmit={onSubmit}>
       <div className="fv-field">
         <label className="fv-field__label label-sm" htmlFor="f-name">Name</label>
-        <input className="fv-field__input" id="f-name" name="name" type="text" autoComplete="name" required aria-invalid={nameInvalid || undefined} />
+        <input className="fv-field__input" id="f-name" name="name" type="text" autoComplete="name" required aria-invalid={nameInvalid || undefined} aria-describedby={nameInvalid ? 'f-name-err' : undefined} />
+        {nameInvalid && <p className="fv-field__error body-sm" id="f-name-err">Please tell us your name.</p>}
       </div>
       <div className="fv-field">
         <label className="fv-field__label label-sm" htmlFor="f-occasion">Occasion</label>
