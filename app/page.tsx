@@ -3,21 +3,30 @@ import { HeroVideo } from '@/components/HeroVideo';
 import { Photo } from '@/components/Photo';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
+import { waLink } from '@/data/contact';
+import { FROM_PRICE, MOQ, formatIDR, personalizedIncludes } from '@/data/manufacturing';
 
 const panels = [
+  {
+    slot: 'manufacturing' as const,
+    title: 'Your perfume brand, made by us.',
+    text: `Private label manufacturing from ${MOQ} pieces. We develop the formula, fill the bottles, and finish them with your box and label.`,
+    href: '/manufacturing',
+    cta: 'Private label pricing',
+  },
+  {
+    slot: 'vision' as const,
+    title: 'Ready to wear.',
+    text: 'Ten of our most loved scents, bottled to order in the size and strength you choose.',
+    href: '/shop',
+    cta: 'Shop the scents',
+  },
   {
     slot: 'bar' as const,
     title: 'A scent made in the room.',
     text: 'Our perfume bars bring guests into the making. They explore, create, and take home something that feels uniquely theirs.',
     href: '/perfume-bar',
     cta: 'See the Perfume Bar',
-  },
-  {
-    slot: 'manufacturing' as const,
-    title: 'From a story to a bottle.',
-    text: 'We develop and manufacture fragrance for brands and meaningful occasions. Not simply a fragrance to be made, but one to be remembered.',
-    href: '/manufacturing',
-    cta: 'See how we work',
   },
   {
     slot: 'finder' as const,
@@ -35,6 +44,8 @@ const mood = [
   { slot: 'fur' as const, label: 'Fur' },
 ];
 
+const mfgWa = waLink('Hello FAUVE, I would like to start a perfume brand with your private label service.');
+
 export default function Home() {
   return (
     <>
@@ -49,8 +60,28 @@ export default function Home() {
           </h1>
           <div className="hero__foot">
             <p className="hero__line">Fragrance tells your story.</p>
-            <Link className="fv-btn" href="/find-your-scent">Find your scent</Link>
+            <div className="closing--pair">
+              <Link className="fv-btn fv-btn--primary" href="/shop">Shop</Link>
+              <Link className="fv-btn" href="/find-your-scent">Find your scent</Link>
+            </div>
           </div>
+        </section>
+
+        <section className="doors" aria-label="What we do">
+          <Link className="door" href="/shop">
+            <span className="label-sm door__eyebrow">For you</span>
+            <span className="h2 door__title">A scent of your own.</span>
+            <span className="body-sm door__text">Shop ready-made scents, find yours in six questions, or book a perfume bar for your event.</span>
+            <span className="link">Shop now</span>
+          </Link>
+          <Link className="door door--brand" href="/manufacturing">
+            <span className="label-sm door__eyebrow">For brands · Private label</span>
+            <span className="h2 door__title">Your perfume brand, made by FAUVE.</span>
+            <span className="body-sm door__text">
+              Formula, bottle, box and label, from {MOQ} pieces. From {formatIDR(FROM_PRICE)} per bottle.
+            </span>
+            <span className="link">See pricing</span>
+          </Link>
         </section>
 
         <section className="band band--umber band--photo">
@@ -92,6 +123,30 @@ export default function Home() {
                   <figcaption className="label-sm">{m.label}</figcaption>
                 </figure>
               ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="band band--stone">
+          <div className="mfg reveal">
+            <div className="mfg__head">
+              <p className="label-sm">Private label manufacturing</p>
+              <h2 className="display">Launch your own scent.</h2>
+              <p className="body-lg">
+                We make perfume under your name, for brands, creators, companies and occasions. You bring the story; we return finished bottles, ready to sell or give.
+              </p>
+            </div>
+            <dl className="facts">
+              <div><dt className="label-sm">Minimum order</dt><dd className="h1">{MOQ} pcs</dd></div>
+              <div><dt className="label-sm">Starting from</dt><dd className="h1">{formatIDR(FROM_PRICE)}</dd><dd className="body-sm">per 30 ml bottle</dd></div>
+              <div><dt className="label-sm">Sizes</dt><dd className="h1">30 · 50 ml</dd><dd className="body-sm">10 and 100 ml on request</dd></div>
+            </dl>
+            <p className="body-sm mfg__incl">Included: {personalizedIncludes.join(', ').toLowerCase()}.</p>
+            <div className="closing--pair">
+              <Link className="fv-btn fv-btn--primary" href="/manufacturing">See full pricing</Link>
+              {mfgWa && (
+                <a className="fv-btn fv-btn--secondary" href={mfgWa} target="_blank" rel="noopener noreferrer">Start your brand</a>
+              )}
             </div>
           </div>
         </section>

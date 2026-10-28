@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import { Behaviors } from '@/components/Behaviors';
+import { FloatingContact } from '@/components/FloatingContact';
 import { SITE_URL } from '@/lib/site';
 import './globals.css';
 
@@ -30,6 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`no-js ${inter.variable}`} suppressHydrationWarning>
       <body>
         {children}
+        <FloatingContact />
         <Behaviors />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }} />
       </body>

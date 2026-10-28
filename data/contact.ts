@@ -1,7 +1,7 @@
 /* FAUVE contact details. Fill these from inputs/3-contact.md.
    Every empty value hides its line on the site rather than showing a placeholder. */
 export const contact = {
-  whatsapp: '', // digits only, with country code, e.g. '62812xxxxxxx'
+  whatsapp: '62811322009', // +62 811-322-009. Digits only, with country code.
   whatsappMessage: 'Hello FAUVE, I would like to ask about',
   email: '',
   instagram: '', // full URL

@@ -55,7 +55,8 @@ export function SiteHeader() {
             <img src="/img/logo/fauve-wordmark-white.svg" alt="" />
           </Link>
           <div className="fv-nav__cta">
-            <Link href="/find-your-scent">
+            <Link href="/shop">Shop</Link>
+            <Link className="long" href="/find-your-scent">
               Find <span className="long">your </span>scent
             </Link>
           </div>

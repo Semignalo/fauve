@@ -30,3 +30,21 @@ export const LEGACY_TONE: Record<string, Tone> = {
   '/img/photo/campaign-leaf.jpg': 'grove',
   '/img/photo/bottle-still.jpg': 'stone',
 };
+
+/* Each scent family has a few photographs. A scent takes one by its id and position,
+   so three scents from the same family never show the same picture. */
+const FAMILY_IMG: Record<string, string[]> = {
+  woody: ['/img/finder/oud.jpg', '/img/photo/wood.jpg', '/img/photo/earth.jpg', '/img/photo/light.jpg'],
+  floral: ['/img/finder/lavender.jpg', '/img/photo/vision.jpg', '/img/finder/morning.jpg', '/img/finder/afternoon.jpg'],
+  gourmand: ['/img/finder/coffee.jpg', '/img/finder/vanilla.jpg', '/img/photo/contact.jpg', '/img/photo/fur.jpg'],
+  amber: ['/img/finder/vanilla.jpg', '/img/finder/dusk.jpg', '/img/photo/contact.jpg', '/img/finder/afternoon.jpg'],
+  fresh: ['/img/finder/forest.jpg', '/img/finder/coast.jpg', '/img/finder/morning.jpg', '/img/photo/earth.jpg'],
+};
+
+export function scentImage(family: string, id: string, k = 0): string | undefined {
+  const pool = FAMILY_IMG[family];
+  if (!pool) return undefined;
+  let h = 0;
+  for (const c of id) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  return pool[(h + k) % pool.length];
+}

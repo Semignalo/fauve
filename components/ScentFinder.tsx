@@ -1,32 +1,16 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { finder as Q } from '@/data/finder';
 import { scents } from '@/data/scents';
 import { waLink } from '@/data/contact';
 import { labelOf, topThree, whySentence, type Answers } from '@/lib/match';
+import { scentImage } from '@/lib/images';
+import { OrderForm } from './OrderForm';
 import { Photo } from './Photo';
 
 /* Step -1 is the intro, 0..n-1 are the questions, n is the short pause, n+1 shows the results. */
-/* Each family has a few photographs. A result takes one by its position, so three scents
-   from the same family never show the same picture. */
-const FAMILY_IMG: Record<string, string[]> = {
-  woody: ['/img/finder/oud.jpg', '/img/photo/wood.jpg', '/img/photo/earth.jpg', '/img/photo/light.jpg'],
-  floral: ['/img/finder/lavender.jpg', '/img/photo/vision.jpg', '/img/finder/morning.jpg', '/img/finder/afternoon.jpg'],
-  gourmand: ['/img/finder/coffee.jpg', '/img/finder/vanilla.jpg', '/img/photo/contact.jpg', '/img/photo/fur.jpg'],
-  amber: ['/img/finder/vanilla.jpg', '/img/finder/dusk.jpg', '/img/photo/contact.jpg', '/img/finder/afternoon.jpg'],
-  fresh: ['/img/finder/forest.jpg', '/img/finder/coast.jpg', '/img/finder/morning.jpg', '/img/photo/earth.jpg'],
-};
-
-function resultImage(family: string, id: string, k: number): string | undefined {
-  const pool = FAMILY_IMG[family];
-  if (!pool) return undefined;
-  let h = 0;
-  for (const c of id) h = (h * 31 + c.charCodeAt(0)) >>> 0;
-  return pool[(h + k) % pool.length];
-}
-
 export function ScentFinder() {
   const [step, setStep] = useState(-1);
   const [answers, setAnswers] = useState<Answers>({});
@@ -204,6 +188,8 @@ function Question({
 }
 
 function Results({ answers, onAgain }: { answers: Answers; onAgain: () => void }) {
+  const [order, setOrder] = useState<string | null>(null);
+  const closeOrder = useCallback(() => setOrder(null), []);
   if (scents.length < 3) {
     const msg = `Hello FAUVE, here is my scent profile: ${Q.map((q) => `${q.eyebrow}: ${labelOf(Q, answers, q.key)}`).join('; ')}.`;
     const href = waLink(msg);
@@ -235,6 +221,7 @@ function Results({ answers, onAgain }: { answers: Answers; onAgain: () => void }
   }
 
   const top = topThree(scents, answers);
+  const choices = top.map((m) => ({ id: m.scent.id, name: m.scent.name, family: m.scent.family }));
   return (
     <section className="screen">
       <p className="label-sm muted">Your scent profile</p>
@@ -246,7 +233,7 @@ function Results({ answers, onAgain }: { answers: Answers; onAgain: () => void }
           return (
             <article className="fv-result" key={sc.id}>
               <div className="fv-result__media">
-                <Photo src={sc.image || resultImage(sc.family, sc.id, k)} tone="stone" tag={false} />
+                <Photo src={sc.image || scentImage(sc.family, sc.id, k)} tone="stone" tag={false} />
               </div>
               <h2 className="fv-result__name h3">{sc.name}</h2>
               <dl className="fv-result__notes body-sm">
@@ -261,15 +248,23 @@ function Results({ answers, onAgain }: { answers: Answers; onAgain: () => void }
               </dl>
               {sc.description && <p className="body-sm">{sc.description}</p>}
               <p className="fv-result__why body-sm">{whySentence(m, Q, answers)}</p>
+              <button className="fv-btn fv-btn--secondary fv-result__order" type="button" onClick={() => setOrder(sc.id)}>
+                Order this scent
+              </button>
             </article>
           );
         })}
       </div>
       <div className="screen__actions">
+        <button className="fv-btn fv-btn--primary" type="button" onClick={() => setOrder(top[0].scent.id)}>
+          Order
+        </button>
         <button className="fv-btn fv-btn--secondary" type="button" onClick={onAgain}>
           Start again
         </button>
+        <Link className="fv-link fv-result__shop" href="/shop">Or browse the shop</Link>
       </div>
+      <OrderForm open={order !== null} onClose={closeOrder} choices={choices} preselect={order ?? undefined} source="finder" />
     </section>
   );
 }
