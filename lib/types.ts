@@ -15,8 +15,8 @@ export type Scent = {
 
 export type FinderOption = { value: string; label: string; image?: string; tint?: 'sand' | 'olive' | 'clay' | 'ash' };
 export type FinderKey =
-  | 'mood' | 'place' | 'time' | 'like' | 'avoid' | 'intensity'
-  | 'daypart' | 'occasion' | 'character' | 'projection' | 'sillage';
+  | 'mood' | 'like' | 'avoid' | 'intensity'
+  | 'detail' | 'daypart' | 'occasion' | 'projection' | 'sillage';
 export type FinderQuestion = { key: FinderKey; eyebrow: string; question: string; multi?: boolean; options: FinderOption[] };
 
 export type Pack = { name: string; for?: string; inclusions?: string[]; price?: string; image?: string };

@@ -1,37 +1,33 @@
+import { followUps } from '../data/finder';
+import { hasNoteGroup } from './notes';
 import type { FinderKey, FinderQuestion, Scent } from './types';
 
 export type Answers = Partial<Record<FinderKey, string | string[]>>;
 export type Match = { scent: Scent; points: number; why: string[] };
 
 const DAY = ['morning', 'afternoon'];
-const CHARACTER_FAMILIES: Record<string, string[]> = {
-  sweet: ['amber', 'gourmand'],
-  fresh: ['fresh'],
-  woody: ['woody'],
-  floral: ['floral'],
-  hungry: ['gourmand'],
-};
 
-const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
+const list = (v: string | string[] | undefined): string[] =>
+  ([] as (string | undefined)[]).concat(v).filter((x): x is string => !!x);
 
-/** Hard rule: a family the visitor said they would rather not wear never appears. */
+/** Hard rule: a family the visitor said they cannot stand never appears, even if they also liked it. */
 export function allowed(scent: Scent, a: Answers): boolean {
-  return !(a.avoid && a.avoid !== 'none' && scent.family === a.avoid);
+  return !list(a.avoid).includes(scent.family);
 }
 
 /** Score one scent against the visitor's answers. Fixed weights, no randomness. */
 export function score(scent: Scent, a: Answers): Match {
   let points = 0;
   const why: string[] = [];
-  if (a.mood && scent.moods.includes(one(a.mood)!)) { points += 3; why.push('mood'); }
-  if (a.place && scent.places.includes(one(a.place)!)) { points += 2; why.push('place'); }
-  if (a.time && scent.time === a.time) { points += 1; why.push('time'); }
-  if (a.like && scent.family === a.like) { points += 3; why.push('like'); }
+  if (a.mood && scent.moods.includes(list(a.mood)[0])) { points += 3; why.push('mood'); }
+  if (list(a.like).includes(scent.family)) {
+    points += 3; why.push('like');
+    // The follow-up only adds points; it never removes a scent, so results are never empty because of it.
+    if (a.detail && a.detail !== 'any' && hasNoteGroup(scent, a.detail as string)) { points += 2; why.push('detail'); }
+  }
   if (a.intensity && scent.intensity === a.intensity) { points += 1; why.push('intensity'); }
-
-  if (a.daypart && DAY.includes(scent.time) === (a.daypart === 'day')) { points += 1; why.push('daypart'); }
-  const wanted = (Array.isArray(a.character) ? a.character : []).flatMap((c) => CHARACTER_FAMILIES[c] ?? []);
-  if (wanted.includes(scent.family)) { points += 2; why.push('character'); }
+  // "all" means no preference, so it neither adds nor removes points.
+  if (a.daypart && a.daypart !== 'all' && DAY.includes(scent.time) === (a.daypart === 'day')) { points += 1; why.push('daypart'); }
   // The catalogue holds one intensity per scent, so projection and sillage each nudge toward it.
   // Longevity is not asked: it follows the concentration (EDP or Extrait) chosen when ordering.
   for (const k of ['projection', 'sillage'] as const) {
@@ -54,8 +50,7 @@ export function topThree(scents: Scent[], a: Answers): Match[] {
 
 export function labelOf(questions: FinderQuestion[], a: Answers, key: FinderKey): string {
   const q = questions.find((x) => x.key === key);
-  const picked = ([] as (string | undefined)[]).concat(a[key]);
-  return picked
+  return list(a[key])
     .map((v) => q?.options.find((x) => x.value === v)?.label.toLowerCase())
     .filter(Boolean)
     .join(', ');
@@ -65,11 +60,11 @@ export function labelOf(questions: FinderQuestion[], a: Answers, key: FinderKey)
 export function whySentence(m: Match, questions: FinderQuestion[], a: Answers): string {
   const w = m.why;
   const L = (k: FinderKey) => labelOf(questions, a, k);
-  if (w.includes('mood') && w.includes('place')) return `Fits your mood (${L('mood')}) and your place (${L('place')}).`;
-  if (w.includes('like') && w.includes('time')) return `Matches the scent you like (${L('like')}) and suits ${L('time')}.`;
+  // The follow-up question depends on the family chosen, so its label is looked up from there.
+  const detail = w.includes('detail') ? labelOf([followUps[list(a.like)[0]]], a, 'detail') : '';
+  const likes = detail ? `${L('like')}, ${detail}` : L('like');
+  if (w.includes('mood') && w.includes('like')) return `Fits your mood (${L('mood')}) and the notes you like (${likes}).`;
   if (w.includes('mood')) return `Matches the mood you chose: ${L('mood')}.`;
-  if (w.includes('like')) return `Matches the scent you like: ${L('like')}.`;
-  if (w.includes('character')) return `Has the scent type you picked: ${L('character')}.`;
-  if (w.includes('place')) return `Matches the place you chose: ${L('place')}.`;
+  if (w.includes('like')) return `Matches the notes you like: ${likes}.`;
   return 'A softer match for your answers.';
 }

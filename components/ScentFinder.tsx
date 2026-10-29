@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { finder as Q } from '@/data/finder';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { finder as Q, followUps } from '@/data/finder';
+import type { FinderQuestion } from '@/lib/types';
 import { scents } from '@/data/scents';
 import { waLink } from '@/data/contact';
 import { labelOf, topThree, whySentence, type Answers } from '@/lib/match';
@@ -10,12 +11,26 @@ import { scentImage } from '@/lib/images';
 import { OrderForm } from './OrderForm';
 import { Photo } from './Photo';
 
-/* Step -1 is the intro, 0..n-1 are the questions, n is the short pause, n+1 shows the results. */
+/* Step -1 is the intro, 0..n-1 are the questions, n is the short pause, n+1 shows the results.
+   The question after "notes you like" depends on the family picked, so every visitor sees
+   one more question than the list holds. */
+const TOTAL = Q.length + 1;
+
+/** The questions in order, with the follow-up placed right after "like" once a family is picked. */
+function stepsFor(answers: Answers): FinderQuestion[] {
+  const family = typeof answers.like === 'string' ? answers.like : '';
+  const extra = followUps[family];
+  if (!extra) return Q;
+  const at = Q.findIndex((q) => q.key === 'like') + 1;
+  return [...Q.slice(0, at), extra, ...Q.slice(at)];
+}
+
 export function ScentFinder() {
   const [step, setStep] = useState(-1);
   const [answers, setAnswers] = useState<Answers>({});
   const stage = useRef<HTMLElement>(null);
-  const n = Q.length;
+  const n = TOTAL;
+  const steps = useMemo(() => stepsFor(answers), [answers]);
 
   useEffect(() => {
     const h = stage.current?.querySelector<HTMLElement>('h1, h2, legend');
@@ -77,9 +92,16 @@ export function ScentFinder() {
         {step >= 0 && step < n && (
           <Question
             key={step}
+            q={steps[step]}
             index={step}
             answers={answers}
-            onAnswer={(key, value) => setAnswers((a) => ({ ...a, [key]: value }))}
+            onAnswer={(key, value) =>
+              setAnswers((a) => {
+                // A different family has a different follow-up, so the old follow-up answer no longer applies.
+                const rest = key === 'like' && a.like !== value ? { ...a, detail: undefined } : a;
+                return { ...rest, [key]: value };
+              })
+            }
             onNext={() => setStep(step + 1)}
           />
         )}
@@ -89,7 +111,7 @@ export function ScentFinder() {
             <h2 className="h2">Finding your scents</h2>
           </section>
         )}
-        {step === n + 1 && <Results answers={answers} onAgain={reset} />}
+        {step === n + 1 && <Results answers={answers} steps={steps} onAgain={reset} />}
       </main>
     </div>
   );
@@ -102,7 +124,7 @@ function Intro({ onBegin }: { onBegin: () => void }) {
     <section className="screen screen--intro">
       <h1 className="display">Find your scent.</h1>
       <p className="body-lg">
-        Answer {(WORDS[Q.length] ?? String(Q.length)).toLowerCase()} quick questions and we will pick three scents for you. Just tap your answers. There is nothing to type.
+        Answer {(WORDS[TOTAL] ?? String(TOTAL)).toLowerCase()} quick questions and we will pick three scents for you. Just tap your answers. There is nothing to type.
       </p>
       <div className="screen__actions">
         <button className="fv-btn fv-btn--primary" type="button" onClick={onBegin}>
@@ -114,24 +136,27 @@ function Intro({ onBegin }: { onBegin: () => void }) {
 }
 
 function Question({
+  q,
   index,
   answers,
   onAnswer,
   onNext,
 }: {
+  q: FinderQuestion;
   index: number;
   answers: Answers;
-  onAnswer: (key: (typeof Q)[number]['key'], value: string | string[]) => void;
+  onAnswer: (key: FinderQuestion['key'], value: string | string[]) => void;
   onNext: () => void;
 }) {
-  const q = Q[index];
   const moved = useRef(false);
   const current = answers[q.key];
   const picked = ([] as (string | undefined)[]).concat(current);
   const ready = picked.some(Boolean);
   const toggle = (value: string) => {
     const set = picked.filter((v): v is string => !!v);
-    onAnswer(q.key, set.includes(value) ? set.filter((v) => v !== value) : [...set, value]);
+    if (set.includes(value)) return onAnswer(q.key, set.filter((v) => v !== value));
+    // "None" cannot be combined with other answers.
+    onAnswer(q.key, value === 'none' ? ['none'] : [...set.filter((v) => v !== 'none'), value]);
   };
 
   const go = () => {
@@ -157,7 +182,7 @@ function Question({
       <fieldset>
         <legend>
           <span className="sr-only">
-            {q.eyebrow} · {index + 1} of {Q.length}
+            {q.eyebrow} · {index + 1} of {TOTAL}
           </span>
           <span className="h1">{q.question}</span>
         </legend>
@@ -195,23 +220,24 @@ function Question({
       </fieldset>
       <div className="screen__actions">
         <button className="fv-btn fv-btn--primary" type="button" disabled={!ready} onClick={go}>
-          {index === Q.length - 1 ? 'See my scents' : 'Next'}
+          {index === TOTAL - 1 ? 'See my scents' : 'Next'}
         </button>
       </div>
     </section>
   );
 }
 
-function Results({ answers, onAgain }: { answers: Answers; onAgain: () => void }) {
+function Results({ answers, steps, onAgain }: { answers: Answers; steps: FinderQuestion[]; onAgain: () => void }) {
   const [order, setOrder] = useState<string | null>(null);
   const closeOrder = useCallback(() => setOrder(null), []);
-  if (scents.length < 3) {
-    const msg = `Hello FAUVE, here is my scent profile: ${Q.map((q) => `${q.eyebrow}: ${labelOf(Q, answers, q.key)}`).join('; ')}.`;
+  const top = topThree(scents, answers);
+  if (scents.length < 3 || top.length === 0) {
+    const msg = `Hello FAUVE, here is my scent profile: ${steps.map((q) => `${q.eyebrow}: ${labelOf(steps, answers, q.key)}`).join('; ')}.`;
     const href = waLink(msg);
     return (
       <section className="screen">
         <div className="results__empty">
-          <h1 className="h1">Our scent list is not ready yet.</h1>
+          <h1 className="h1">{scents.length < 3 ? 'Our scent list is not ready yet.' : 'We could not find a match.'}</h1>
           <p className="body-lg">
             Send us your answers and we will pick three scents for you.
           </p>
@@ -234,7 +260,6 @@ function Results({ answers, onAgain }: { answers: Answers; onAgain: () => void }
     );
   }
 
-  const top = topThree(scents, answers);
   const choices = top.map((m) => ({ id: m.scent.id, name: m.scent.name, family: m.scent.family }));
   return (
     <section className="screen">
@@ -260,7 +285,7 @@ function Results({ answers, onAgain }: { answers: Answers; onAgain: () => void }
                   ))}
               </dl>
               {sc.description && <p className="body-sm">{sc.description}</p>}
-              <p className="fv-result__why body-sm">{whySentence(m, Q, answers)}</p>
+              <p className="fv-result__why body-sm">{whySentence(m, steps, answers)}</p>
               <button className="fv-btn fv-btn--secondary fv-result__order" type="button" onClick={() => setOrder(sc.id)}>
                 Order this scent
               </button>
