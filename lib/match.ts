@@ -29,7 +29,7 @@ export function score(scent: Scent, a: Answers): Match {
   // "all" means no preference, so it neither adds nor removes points.
   if (a.daypart && a.daypart !== 'all' && DAY.includes(scent.time) === (a.daypart === 'day')) { points += 1; why.push('daypart'); }
   // The catalogue holds one intensity per scent, so projection and sillage each nudge toward it.
-  // Longevity is not asked: it follows the concentration (EDP or Extrait) chosen when ordering.
+  // Longevity is not asked: everything is sold as Extrait.
   for (const k of ['projection', 'sillage'] as const) {
     if (a[k] && scent.intensity === a[k]) { points += 1; why.push(k); }
   }

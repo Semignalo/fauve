@@ -6,8 +6,8 @@ import type { FinderQuestion } from '@/lib/types';
    daypart maps onto `time_of_day` (day = morning/afternoon, night = dusk/night, all = no preference).
    `like` takes one answer and is followed by one of the `followUps` below, chosen by the family
    picked. `avoid` allows several answers and is a hard rule: those families are removed.
-   occasion is not scored yet; it is kept in the WhatsApp summary. Longevity is not asked, it
-   follows the concentration chosen when ordering. Keep the wording plain and direct. */
+   occasion is not scored yet; it is kept in the WhatsApp summary. Longevity is not asked, everything
+   is sold as Extrait. Keep the wording plain and direct. */
 export const finder: FinderQuestion[] = [
   { key: 'mood', eyebrow: 'Mood', question: 'What kind of mood do you want your perfume to have?', options: [
     { value: 'warm', label: 'Warm and cozy', image: '/img/finder/coffee.jpg' },

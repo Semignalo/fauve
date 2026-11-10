@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { waLink } from '@/data/contact';
 import { useFocusTrap } from './useFocusTrap';
-import { CONCENTRATIONS, CONCENTRATION_NOTE, SIZES, formatIDR, priceOf, type Concentration, type Size } from '@/data/shop';
+import { CONCENTRATION, SIZES, formatIDR, priceOf, type Size } from '@/data/shop';
 
 export type OrderChoice = { id: string; name: string; family: string };
 
@@ -22,7 +22,6 @@ const REQUIRED = ['name', 'phone', 'address'] as const;
 export function OrderForm({ open, onClose, choices, preselect, source }: Props) {
   const [scent, setScent] = useState(preselect ?? choices[0]?.id ?? '');
   const [size, setSize] = useState<Size>(30);
-  const [conc, setConc] = useState<Concentration>('EDP');
   const [qty, setQty] = useState(1);
   const [invalid, setInvalid] = useState<string[]>([]);
   const closeBtn = useRef<HTMLButtonElement>(null);
@@ -50,7 +49,7 @@ export function OrderForm({ open, onClose, choices, preselect, source }: Props) 
     };
   }, [open, onClose]);
 
-  const unit = priceOf(conc, size);
+  const unit = priceOf(size);
   const total = unit * qty;
   const chosen = choices.find((c) => c.id === scent);
 
@@ -73,7 +72,7 @@ export function OrderForm({ open, onClose, choices, preselect, source }: Props) 
       '',
       `Scent: ${chosen ? chosen.name : 'Not chosen yet'} (${SOURCE_LABEL[source]})`,
       `Size: ${size} ml`,
-      `Concentration: ${conc}`,
+      `Concentration: ${CONCENTRATION}`,
       `Quantity: ${qty}`,
       `Price: ${formatIDR(unit)} each, total ${formatIDR(total)}`,
     ];
@@ -148,21 +147,6 @@ export function OrderForm({ open, onClose, choices, preselect, source }: Props) 
                 <label key={s} className="fv-choice">
                   <input type="radio" name="size" value={s} checked={size === s} onChange={() => setSize(s)} />
                   <span>{s} ml</span>
-                </label>
-              ))}
-            </div>
-          </fieldset>
-
-          <fieldset className="fv-group">
-            <legend className="label-sm">Concentration</legend>
-            <div className="fv-choices fv-choices--wide">
-              {CONCENTRATIONS.map((c) => (
-                <label key={c} className="fv-choice">
-                  <input type="radio" name="conc" value={c} checked={conc === c} onChange={() => setConc(c)} />
-                  <span>
-                    {c}
-                    <small>{CONCENTRATION_NOTE[c]}</small>
-                  </span>
                 </label>
               ))}
             </div>

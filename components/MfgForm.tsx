@@ -2,20 +2,18 @@
 
 import { useState } from 'react';
 import { waLink } from '@/data/contact';
-import { CONCENTRATIONS, MOQ, formatIDR, mfgPrice, personalized } from '@/data/manufacturing';
-import type { Concentration } from '@/data/shop';
+import { MFG_CONCENTRATION, MOQ, formatIDR, mfgPrice, personalized } from '@/data/manufacturing';
 
-const SIZES = [...personalized.map((r) => r.label), '10 ml', '100 ml'];
+const SIZES = personalized.map((r) => r.label);
 const REQUIRED = ['name', 'phone'] as const;
 
 /** Private label inquiry. Writes a WhatsApp message with a price estimate from the pricelist. */
 export function MfgForm() {
   const [size, setSize] = useState(SIZES[0]);
-  const [conc, setConc] = useState<Concentration>('EDP');
   const [qty, setQty] = useState(MOQ);
   const [invalid, setInvalid] = useState<string[]>([]);
 
-  const unit = mfgPrice(size, conc);
+  const unit = mfgPrice(size);
   const q = Math.max(MOQ, qty || 0);
   const estimate = unit ? `${formatIDR(unit)} per piece, about ${formatIDR(unit * q)} for ${q} pcs` : 'Price on request';
 
@@ -36,7 +34,7 @@ export function MfgForm() {
       `WhatsApp: ${v('phone')}`,
     ];
     if (v('brand')) lines.push(`Brand: ${v('brand')}`);
-    lines.push('', `Size: ${size}`, `Concentration: ${conc}`, `Quantity: ${q} pcs`, `Estimate: ${estimate}`);
+    lines.push('', `Size: ${size}`, `Concentration: ${MFG_CONCENTRATION}`, `Quantity: ${q} pcs`, `Estimate: ${estimate}`);
     if (v('notes')) lines.push('', `About the scent: ${v('notes')}`);
     const href = waLink(lines.join('\n'));
     if (href) window.open(href, '_blank', 'noopener');
@@ -68,18 +66,6 @@ export function MfgForm() {
             <label key={s} className="fv-choice">
               <input type="radio" name="size" value={s} checked={size === s} onChange={() => setSize(s)} />
               <span>{s}</span>
-            </label>
-          ))}
-        </div>
-      </fieldset>
-
-      <fieldset className="fv-group">
-        <legend className="label-sm">Concentration</legend>
-        <div className="fv-choices">
-          {CONCENTRATIONS.map((c) => (
-            <label key={c} className="fv-choice">
-              <input type="radio" name="conc" value={c} checked={conc === c} onChange={() => setConc(c)} />
-              <span>{c}</span>
             </label>
           ))}
         </div>

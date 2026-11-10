@@ -17,7 +17,7 @@ const panels = [
   {
     slot: 'vision' as const,
     title: 'Ready to wear.',
-    text: 'Ten of our most loved scents, bottled to order in the size and strength you choose.',
+    text: 'Ten of our most loved scents, bottled to order as Extrait, in the size you choose.',
     href: '/shop',
     cta: 'Shop the scents',
   },
@@ -135,8 +135,8 @@ export default function Home() {
             </div>
             <dl className="facts">
               <div><dt className="label-sm">Minimum order</dt><dd className="h1">{MOQ} pcs</dd></div>
-              <div><dt className="label-sm">Starting from</dt><dd className="h1">{formatIDR(FROM_PRICE)}</dd><dd className="body-sm">per 30 ml bottle</dd></div>
-              <div><dt className="label-sm">Sizes</dt><dd className="h1">30 · 50 ml</dd><dd className="body-sm">10 and 100 ml on request</dd></div>
+              <div><dt className="label-sm">Starting from</dt><dd className="h1">{formatIDR(FROM_PRICE)}</dd><dd className="body-sm">per 10 ml bottle</dd></div>
+              <div><dt className="label-sm">Sizes</dt><dd className="h1">10 · 30 · 50 · 100 ml</dd><dd className="body-sm">Extrait (50%)</dd></div>
             </dl>
             <p className="body-sm mfg__incl">Included: {personalizedIncludes.join(', ').toLowerCase()}.</p>
             <div className="closing--pair">

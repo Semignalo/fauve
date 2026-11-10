@@ -373,7 +373,11 @@ html:not(.no-js) .reveal.is-in { opacity: 1; transform: none; }
 
 @media (max-width: 760px) {
   .fv-nav__menu .long, .fv-nav .long { display: none; }
-  .fv-nav__cta { gap: 18px; }
+  .fv-nav { column-gap: 12px; }
+  .fv-nav__menu { gap: 10px; letter-spacing: 0.16em; white-space: nowrap; }
+  .fv-nav__mark img, .fv-menu__mark { height: 13px; }
+  .fv-nav__cta a { letter-spacing: 0.14em; white-space: nowrap; }
+  .fv-nav__cta a[href="/shop"] { display: none; }
   .hero__mark { width: 78vw; margin-top: 4svh; }
   .panel__body { grid-template-columns: 1fr; }
   .panel__title { max-width: 12ch; }

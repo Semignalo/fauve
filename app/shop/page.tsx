@@ -9,7 +9,7 @@ import type { Scent } from '@/lib/types';
 
 export const metadata: Metadata = {
   title: 'Shop',
-  description: 'Ten FAUVE scents, ready to order in 10, 30, 50 or 100 ml, as EDP or Extrait.',
+  description: 'Ten FAUVE scents, ready to order in 10, 30, 50 or 100 ml, as Extrait (50%).',
   alternates: { canonical: '/shop' },
 };
 
@@ -24,7 +24,7 @@ export default function Shop() {
         <section className="page-head band--umber"><div className="wrap reveal">
           <h1 className="h1">Ready to wear.</h1>
           <p className="body-lg muted">
-            Ten of our most loved scents. Choose the size and the strength, and we bottle it for you.
+            Ten of our most loved scents. Choose the size, and we bottle it for you as Extrait.
           </p>
         </div></section>
 

@@ -5,15 +5,14 @@ import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { waLink } from '@/data/contact';
 import {
-  CONCENTRATIONS,
   FROM_PRICE,
+  MFG_CONCENTRATION,
   MOQ,
   audiences,
   faq,
   formatIDR,
   personalized,
   personalizedIncludes,
-  personalizedNote,
   wholesale,
   wholesaleIncludes,
   type PriceRow,
@@ -42,19 +41,14 @@ function PriceTable({ caption, rows, unit }: { caption: string; rows: PriceRow[]
         <thead>
           <tr>
             <th scope="col"><span className="sr-only">{unit}</span></th>
-            {CONCENTRATIONS.map((c) => (
-              <th scope="col" key={c} className="label-sm">{c}</th>
-            ))}
+            <th scope="col" className="label-sm">{MFG_CONCENTRATION}</th>
           </tr>
         </thead>
         <tbody>
           {rows.map((r) => (
             <tr key={r.label}>
               <th scope="row" className="h3">{r.label}</th>
-              {CONCENTRATIONS.map((c) => {
-                const p = r.prices[c];
-                return <td key={c} className={p ? 'h3' : 'body-sm muted-dark'}>{p ? formatIDR(p) : 'Price on request'}</td>;
-              })}
+              <td className={r.price ? 'h3' : 'body-sm muted-dark'}>{r.price ? formatIDR(r.price) : 'Price on request'}</td>
             </tr>
           ))}
         </tbody>
@@ -77,7 +71,7 @@ export default function Manufacturing() {
           <dl className="facts facts--dark">
             <div><dt className="label-sm">Minimum order</dt><dd className="h2">{MOQ} pcs</dd></div>
             <div><dt className="label-sm">Starting from</dt><dd className="h2">{formatIDR(FROM_PRICE)}</dd></div>
-            <div><dt className="label-sm">Sizes</dt><dd className="h2">30 · 50 ml</dd></div>
+            <div><dt className="label-sm">Sizes</dt><dd className="h2">10 · 30 · 50 · 100 ml</dd></div>
           </dl>
           <div className="closing--pair">
             <a className="fv-btn fv-btn--primary" href="#brief">Start your brand</a>
@@ -97,7 +91,7 @@ export default function Manufacturing() {
             <ul className="included body-sm">
               {personalizedIncludes.map((i) => <li key={i}>{i}</li>)}
             </ul>
-            <p className="body-sm muted-dark">Price includes {personalizedIncludes.join(', ').toLowerCase()}. {personalizedNote}</p>
+            <p className="body-sm muted-dark">Price includes {personalizedIncludes.join(', ').toLowerCase()}. Custom perfume is made as Extrait (50%).</p>
           </div>
         </section>
 
@@ -168,7 +162,7 @@ export default function Manufacturing() {
           <div className="cols cols--offset">
             <div className="pair-text reveal">
               <h2 className="h1">Tell us about it.</h2>
-              <p className="body muted">Choose a size and strength for an estimate. We reply on WhatsApp with samples and a final quote.</p>
+              <p className="body muted">Choose a size for an estimate. We reply on WhatsApp with samples and a final quote.</p>
             </div>
             <MfgForm />
           </div>
