@@ -31,7 +31,6 @@ export default function Event() {
                   <span className="label-sm">Place</span>
                   <a className="body" href={event.mapsUrl} target="_blank" rel="noopener noreferrer">{event.venue}</a>
                 </li>
-                <li><span className="label-sm">Entry fee</span><span className="body">{event.feeLabel}</span></li>
                 <li><span className="label-sm">Seats</span><span className="body">{event.maxSeats} guests</span></li>
               </ul>
               <h2 className="h2">With only Rp150k, you get</h2>

@@ -12,7 +12,7 @@ export const event = {
   includes: [
     'Your own customizable 30ml Eau de Parfum',
     'Complimentary deodorizer serum spray: Confidence Burst, from Starinc',
-    'Complimentary meal: Chicken Blackpepper and Flavored Tea',
+    'Complimentary meal',
   ],
   // Put your QRIS image at public/img/event/qris.png. Shown above the proof upload.
   qris: '/img/event/qris.png',
