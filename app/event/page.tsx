@@ -17,8 +17,8 @@ export default function Event() {
       <SiteHeader />
       <main id="main">
         <section className="page-head band--umber"><div className="wrap reveal">
-          <h1 className="h1">{event.title}.</h1>
-          <p className="body-lg muted">An evening to build a perfume that is yours, with {event.maxSeats} guests at most.</p>
+          <h1 className="h1">{event.title}</h1>
+          <p className="body-lg muted">{event.intro}</p>
         </div></section>
 
         <section className="band band--tight"><div className="wrap">
@@ -26,14 +26,15 @@ export default function Event() {
             <div className="event__info">
               <ul className="contact__list">
                 <li><span className="label-sm">Date</span><span className="body">{event.dateLabel}</span></li>
+                <li><span className="label-sm">Time</span><span className="body">{event.timeLabel}</span></li>
                 <li>
                   <span className="label-sm">Place</span>
-                  <a className="body" href={event.mapsUrl} target="_blank" rel="noopener noreferrer">{event.venue}, open in Maps</a>
+                  <a className="body" href={event.mapsUrl} target="_blank" rel="noopener noreferrer">{event.venue}</a>
                 </li>
                 <li><span className="label-sm">Entry fee</span><span className="body">{event.feeLabel}</span></li>
                 <li><span className="label-sm">Seats</span><span className="body">{event.maxSeats} guests</span></li>
               </ul>
-              <h2 className="h2">What you take part in</h2>
+              <h2 className="h2">With only Rp150k, you get</h2>
               <ul className="event__list body-lg">
                 {event.includes.map((i) => <li key={i}>{i}</li>)}
               </ul>

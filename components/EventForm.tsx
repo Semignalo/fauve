@@ -121,7 +121,7 @@ export function EventForm() {
   }
 
   if (status === 'done') {
-    const chat = waLink(`Hello FAUVE, I registered for the ${event.dateLabel} event at ${event.venue}. My name is ${doneName}.`);
+    const chat = waLink(`Hello FAUVE, I registered for the ${event.dateLabel} event. My name is ${doneName}.`);
     return (
       <div className="event-done" role="status">
         <h2 className="h2">Thank you, {doneName}.</h2>
