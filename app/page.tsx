@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { EventBand, EventPopup } from '@/components/EventPromo';
 import { HeroVideo } from '@/components/HeroVideo';
 import { Photo } from '@/components/Photo';
 import { SiteFooter } from '@/components/SiteFooter';
@@ -51,6 +52,7 @@ export default function Home() {
     <>
       <a className="skip" href="#main">Skip to content</a>
       <SiteHeader />
+      <EventPopup />
       <main id="main">
         <section className="hero">
           <div className="hero__media"><Photo slot="hero" priority tag={false} /><HeroVideo /></div>
@@ -66,6 +68,8 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        <EventBand />
 
         <section className="doors" aria-label="What we do">
           <Link className="door" href="/shop">

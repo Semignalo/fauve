@@ -567,3 +567,30 @@ body.is-locked .fv-float { display: none; }
 .event-file__text { display: grid; gap: 2px; min-width: 0; }
 .event-file__text .body { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .event-file:has([aria-invalid="true"]) { border-color: #e0805f; }
+
+/* Homepage event popup and band */
+.fv-pop { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 20px; }
+.fv-pop__scrim { position: absolute; inset: 0; background: rgba(10, 8, 6, 0.7); animation: fade-in 0.6s var(--ease); }
+.fv-pop__box {
+  position: relative; width: min(560px, 100%); max-height: calc(100svh - 40px); overflow-y: auto;
+  background: var(--ink); color: var(--bone); border: 1px solid var(--line-dark);
+  padding: clamp(28px, 5vw, 52px); display: grid; gap: 22px; animation: screen-in 0.7s var(--ease);
+}
+.fv-pop__close { position: absolute; top: 14px; right: 14px; background: none; border: 0; color: inherit; cursor: pointer; padding: 10px; line-height: 0; }
+.fv-pop__box .h1 { padding-right: 36px; }
+.fv-pop__facts { list-style: none; margin: 0; padding: 0; display: grid; }
+.fv-pop__facts li { display: flex; justify-content: space-between; gap: 24px; padding: 14px 0; border-top: 1px solid var(--line-dark); }
+.fv-pop__facts li:last-child { border-bottom: 1px solid var(--line-dark); }
+.fv-pop__facts .label-sm { color: var(--bone-soft); flex: none; }
+.fv-pop__facts .body { text-align: right; }
+
+.eventband__in { display: grid; gap: clamp(28px, 4vw, 48px); max-width: 1600px; margin: 0 auto; justify-items: start; }
+@media (min-width: 900px) { .eventband__in { grid-template-columns: 1.3fr 1fr; align-items: end; } .eventband__in .fv-btn { grid-column: 1; } }
+.eventband__head { display: grid; gap: 20px; }
+.eventband__head .body-lg { max-width: 46ch; color: var(--charcoal-soft); }
+.eventband__facts { list-style: none; margin: 0; padding: 0; display: grid; width: 100%; }
+.eventband__facts li { display: flex; gap: 24px; padding: 16px 0; border-top: 1px solid var(--line-light); }
+.eventband__facts li:last-child { border-bottom: 1px solid var(--line-light); }
+.eventband__facts .label-sm { color: var(--charcoal-soft); width: 72px; flex: none; }
+.eventband__facts .body { color: var(--charcoal); }
+@media (max-width: 520px) { .fv-pop__facts li { flex-direction: column; gap: 4px; } .fv-pop__facts .body { text-align: left; } }

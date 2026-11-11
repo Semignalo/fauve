@@ -3,6 +3,8 @@ export const event = {
   title: 'Scented Soiree', // working name, final name tbd
   dateLabel: 'Saturday, 28 November 2026',
   timeLabel: '11.00 AM',
+  // The homepage popup and banner hide themselves after this moment (end of event day, Jakarta time).
+  endsAt: '2026-11-28T23:59:59+07:00',
   intro: 'Come join us in creating your personalized scent and enjoy a delicious warm meal.',
   venue: 'Amor Restaurant & Cafe',
   mapsUrl: 'https://maps.app.goo.gl/QWCf3NcTYkHcrA6NA',
