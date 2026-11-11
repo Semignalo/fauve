@@ -60,7 +60,17 @@ export function EventPopup() {
         <button className="fv-pop__close" type="button" ref={closeBtn} onClick={close} aria-label="Close">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19" /></svg>
         </button>
-        <h2 className="h1" id="pop-title">{event.title}</h2>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          className="fv-pop__banner"
+          src="/img/event/workshop-sm.jpg"
+          srcSet="/img/event/workshop-sm.jpg 1200w, /img/event/workshop.jpg 2400w"
+          sizes="640px"
+          width={1200}
+          height={400}
+          alt=""
+        />
+        <h2 className="sr-only" id="pop-title">{event.title}, Perfume Workshop</h2>
         <p className="body-lg muted">{event.intro}</p>
         <ul className="fv-pop__facts">
           <li><span className="label-sm">When</span><span className="body">{event.dateLabel}, {event.timeLabel}</span></li>
@@ -81,12 +91,15 @@ export function EventBand() {
   if (!live) return null;
 
   return (
-    <section className="band band--sand eventband" aria-label="Upcoming event">
+    <section className="band eventband" aria-label="Upcoming event">
       <div className="eventband__in reveal">
-        <div className="eventband__head">
-          <h2 className="display">{event.title}</h2>
-          <p className="body-lg">{event.intro}</p>
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className="eventband__logos" src="/img/event/logos.png" width={887} height={103} alt="Amor, FAUVE and Starinc" />
+        <h2 className="eventband__title">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/img/event/title.png" width={1980} height={500} alt="Scented Soiree, Perfume Workshop" />
+        </h2>
+        <p className="eventband__lead">{event.intro}</p>
         <ul className="eventband__facts">
           <li><span className="label-sm">When</span><span className="body">{event.dateLabel}, {event.timeLabel}</span></li>
           <li><span className="label-sm">Where</span><span className="body">{event.venue}</span></li>

@@ -16,14 +16,24 @@ export default function Event() {
       <a className="skip" href="#main">Skip to content</a>
       <SiteHeader />
       <main id="main">
-        <section className="page-head band--umber"><div className="wrap reveal">
-          <h1 className="h1">{event.title}</h1>
-          <p className="body-lg muted">{event.intro}</p>
-        </div></section>
+        <section className="event-hero">
+          <h1 className="sr-only">{event.title}, Perfume Workshop</h1>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/img/event/workshop.jpg"
+            srcSet="/img/event/workshop-sm.jpg 1200w, /img/event/workshop.jpg 2400w"
+            sizes="100vw"
+            width={2400}
+            height={800}
+            alt="Scented Soiree, Perfume Workshop. Amor, FAUVE and Starinc."
+            fetchPriority="high"
+          />
+        </section>
 
         <section className="band band--tight"><div className="wrap">
           <div className="event reveal">
             <div className="event__info">
+              <p className="body-lg">{event.intro}</p>
               <ul className="contact__list">
                 <li><span className="label-sm">Date</span><span className="body">{event.dateLabel}</span></li>
                 <li><span className="label-sm">Time</span><span className="body">{event.timeLabel}</span></li>
