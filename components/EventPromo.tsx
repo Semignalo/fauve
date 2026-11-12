@@ -103,7 +103,6 @@ export function EventBand() {
         <ul className="eventband__facts">
           <li><span className="label-sm">When</span><span className="body">{event.dateLabel}, {event.timeLabel}</span></li>
           <li><span className="label-sm">Where</span><span className="body">{event.venue}</span></li>
-          <li><span className="label-sm">Seats</span><span className="body">{event.maxSeats} guests only</span></li>
         </ul>
         <Link className="fv-btn fv-btn--primary" href="/event">Reserve your seat</Link>
       </div>

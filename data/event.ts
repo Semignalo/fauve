@@ -10,7 +10,6 @@ export const event = {
   mapsUrl: 'https://maps.app.goo.gl/QWCf3NcTYkHcrA6NA',
   fee: 150000, // per person
   feeLabel: 'Rp150.000',
-  maxSeats: 30, // total people, not registrations
   includes: [
     'Your own customizable 30ml Eau de Parfum',
     'Complimentary deodorizer serum spray: Confidence Burst, from Starinc',

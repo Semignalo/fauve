@@ -6,7 +6,7 @@ import { event } from '@/data/event';
 
 export const metadata: Metadata = {
   title: 'Event',
-  description: `${event.title}. ${event.dateLabel} at ${event.venue}. ${event.maxSeats} seats, ${event.feeLabel} per guest.`,
+  description: `${event.title}. ${event.dateLabel} at ${event.venue}. ${event.feeLabel} per guest.`,
   alternates: { canonical: '/event' },
 };
 
@@ -41,7 +41,6 @@ export default function Event() {
                   <span className="label-sm">Place</span>
                   <a className="body" href={event.mapsUrl} target="_blank" rel="noopener noreferrer">{event.venue}</a>
                 </li>
-                <li><span className="label-sm">Seats</span><span className="body">{event.maxSeats} guests</span></li>
               </ul>
               <h2 className="h2">With only Rp150k, you get</h2>
               <ul className="event__list body-lg">

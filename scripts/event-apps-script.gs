@@ -13,7 +13,6 @@
  */
 var SHEET_NAME = 'Registrations';
 var FOLDER_NAME = 'FAUVE Event Proofs';
-var MAX_SEATS = 30; // total people
 var FEE = 150000; // per person
 var MAX_PAX_PER_REG = 10;
 var HEADERS = ['Timestamp', 'Name', 'WhatsApp', 'Pax', 'Total (Rp)', 'Dietary restrictions', 'Proof', 'Payment'];
@@ -38,7 +37,7 @@ function getSheet_() {
   return sh;
 }
 
-// Total people registered so far.
+// Total people registered so far, for reference only.
 function seats_(sh) {
   var n = sh.getLastRow() - 1;
   if (n < 1) return 0;
@@ -57,9 +56,9 @@ function json_(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
 }
 
-// Seats taken, used by the page to show how many are left.
+// Total people registered so far (no cap: if it gets too big, run a second batch).
 function doGet() {
-  return json_({ count: seats_(getSheet_()), max: MAX_SEATS });
+  return json_({ count: seats_(getSheet_()) });
 }
 
 function doPost(e) {
@@ -76,8 +75,6 @@ function doPost(e) {
     }
 
     var sh = getSheet_();
-    var taken = seats_(sh);
-    if (taken + pax > MAX_SEATS) return json_({ ok: false, error: 'full', left: Math.max(0, MAX_SEATS - taken) });
 
     var proofLink;
     try {
@@ -99,7 +96,7 @@ function doPost(e) {
       proofLink,
       'Awaiting check',
     ]);
-    return json_({ ok: true, count: taken + pax, max: MAX_SEATS });
+    return json_({ ok: true });
   } catch (err) {
     return json_({ ok: false, error: 'server', detail: String(err) });
   } finally {

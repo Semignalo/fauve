@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { event, rupiah } from '@/data/event';
 import { waLink } from '@/data/contact';
 
-type Status = 'idle' | 'sending' | 'done' | 'error' | 'full';
+type Status = 'idle' | 'sending' | 'done' | 'error';
 type Errors = { name?: string; whatsapp?: string; proof?: string };
 
 const MAX_PAX = 10;
@@ -31,7 +31,6 @@ function compress(file: File): Promise<{ data: string; type: string }> {
 /** Registers guests by posting to a Google Apps Script web app that appends a row to a Google Sheet. */
 export function EventForm() {
   const url = event.formUrl;
-  const [taken, setTaken] = useState<number | null>(null);
   const [status, setStatus] = useState<Status>('idle');
   const [errors, setErrors] = useState<Errors>({});
   const [pax, setPax] = useState(1);
@@ -55,17 +54,7 @@ export function EventForm() {
     img.src = event.qris;
   }, []);
 
-  useEffect(() => {
-    if (!url) return;
-    fetch(url)
-      .then((r) => r.json())
-      .then((d) => typeof d.count === 'number' && setTaken(d.count))
-      .catch(() => {});
-  }, [url]);
-
-  const left = taken === null ? null : Math.max(0, event.maxSeats - taken);
-  const full = status === 'full' || left === 0;
-  const maxPax = Math.min(MAX_PAX, left ?? MAX_PAX);
+  const maxPax = MAX_PAX;
   const paxN = Math.max(1, Math.min(pax, maxPax));
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -103,9 +92,6 @@ export function EventForm() {
       if (data.ok) {
         setDoneName(name);
         setStatus('done');
-      } else if (data.error === 'full') {
-        if (typeof data.left === 'number') setTaken(event.maxSeats - data.left);
-        setStatus('full');
       } else {
         console.error('Event form:', data);
         setStatus('error');
@@ -137,25 +123,8 @@ export function EventForm() {
     );
   }
 
-  if (full) {
-    const ask = waLink(`Hello FAUVE, the ${event.dateLabel} event is full. Could you add me to the waiting list?`);
-    return (
-      <div className="event-done">
-        <h2 className="h2">All {event.maxSeats} seats are taken.</h2>
-        <p className="body-lg muted">Message us and we will let you know if a place opens up.</p>
-        {ask && (
-          <a className="fv-btn fv-btn--primary" href={ask} target="_blank" rel="noopener noreferrer">
-            Join the waiting list
-          </a>
-        )}
-      </div>
-    );
-  }
-
   return (
     <form className="fv-form" noValidate onSubmit={onSubmit}>
-      {left !== null && <p className="label-sm event-left">{left} of {event.maxSeats} seats left</p>}
-
       <div className="fv-field">
         <label className="fv-field__label label-sm" htmlFor="e-name">Name</label>
         <input className="fv-field__input" id="e-name" name="name" type="text" autoComplete="name" required aria-invalid={errors.name ? true : undefined} aria-describedby={errors.name ? 'e-name-err' : undefined} />
