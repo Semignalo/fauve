@@ -15,10 +15,17 @@ export const event = {
     'Complimentary deodorizer serum spray: Confidence Burst, from Starinc',
     'Complimentary meal',
   ],
-  // Put your QRIS image at public/img/event/qris.png. Shown above the proof upload.
-  qris: '/img/event/qris.png',
+  // Bank details, shown above the proof upload. Guests transfer the total, then attach the receipt.
+  bank: {
+    name: 'BCA',
+    number: '0888032111',
+    holder: 'BERKAT BAGI KELUARGA PT',
+  },
   // Google Apps Script web app URL (see scripts/event-apps-script.gs). Set in .env.local, it is baked in at build time.
   formUrl: process.env.NEXT_PUBLIC_EVENT_FORM_URL ?? '',
 };
 
 export const rupiah = (n: number) => 'Rp' + n.toLocaleString('id-ID');
+
+/** Groups the account number in fours so it is easy to read and to copy by hand: 0888 0321 11. */
+export const accountNumber = (n: string) => n.replace(/\s/g, '').replace(/(.{4})/g, '$1 ').trim();

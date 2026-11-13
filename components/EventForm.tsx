@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { event, rupiah } from '@/data/event';
+import { accountNumber, event, rupiah } from '@/data/event';
 import { waLink } from '@/data/contact';
 
 type Status = 'idle' | 'sending' | 'done' | 'error';
@@ -35,7 +35,7 @@ export function EventForm() {
   const [errors, setErrors] = useState<Errors>({});
   const [pax, setPax] = useState(1);
   const [doneName, setDoneName] = useState('');
-  const [qrisOk, setQrisOk] = useState(false);
+  const [copied, setCopied] = useState(false);
   const [preview, setPreview] = useState('');
   const [fileName, setFileName] = useState('');
 
@@ -48,11 +48,16 @@ export function EventForm() {
     if (file) setErrors((p) => ({ ...p, proof: undefined }));
   }
 
-  useEffect(() => {
-    const img = new Image();
-    img.onload = () => setQrisOk(true);
-    img.src = event.qris;
-  }, []);
+  /** Copies the account number. Falls back to selecting the text when the clipboard is unavailable. */
+  async function copyAccount() {
+    try {
+      await navigator.clipboard.writeText(event.bank.number);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      window.getSelection()?.selectAllChildren(document.getElementById('e-bank-number')!);
+    }
+  }
 
   const maxPax = MAX_PAX;
   const paxN = Math.max(1, Math.min(pax, maxPax));
@@ -151,13 +156,24 @@ export function EventForm() {
       <div className="event-pay">
         <p className="label-sm">Payment</p>
         <p className="event-total">{rupiah(event.fee * paxN)}</p>
-        <p className="body-sm muted">{rupiah(event.fee)} × {paxN} {paxN === 1 ? 'person' : 'people'}. Pay by QRIS, then attach the receipt below.</p>
-        {qrisOk ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img className="event-qris" src={event.qris} alt="QRIS payment code for FAUVE" />
-        ) : (
-          <p className="body-sm muted">The QRIS code is being added. Please check back shortly.</p>
-        )}
+        <p className="body-sm muted">{rupiah(event.fee)} × {paxN} {paxN === 1 ? 'person' : 'people'}. Transfer the total to the account below, then attach the receipt.</p>
+        <dl className="event-bank">
+          <div>
+            <dt className="label-sm">Bank</dt>
+            <dd className="body">{event.bank.name}</dd>
+          </div>
+          <div>
+            <dt className="label-sm">Account number</dt>
+            <dd className="event-bank__number" id="e-bank-number">{accountNumber(event.bank.number)}</dd>
+          </div>
+          <div>
+            <dt className="label-sm">Account name</dt>
+            <dd className="body">{event.bank.holder}</dd>
+          </div>
+        </dl>
+        <button className="event-bank__copy label-sm" type="button" onClick={copyAccount}>
+          {copied ? 'Copied' : 'Copy account number'}
+        </button>
       </div>
 
       <div className="fv-field">

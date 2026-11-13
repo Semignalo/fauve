@@ -556,7 +556,16 @@ body.is-locked .fv-float { display: none; }
 .event-pay .label-sm { color: var(--bone-soft); margin: 0; }
 .event-pay p { margin: 0; }
 .event-total { font-size: clamp(1.8rem, 3.4vw, 2.6rem); letter-spacing: -0.02em; line-height: 1.1; }
-.event-qris { width: min(300px, 100%); height: auto; background: #fff; padding: 14px; margin-top: 8px; }
+.event-bank { margin: 10px 0 0; display: grid; gap: 16px; width: 100%; }
+.event-bank dt { color: var(--bone-soft); margin-bottom: 4px; }
+.event-bank dd { margin: 0; }
+.event-bank__number { font-size: clamp(1.3rem, 2.6vw, 1.7rem); letter-spacing: 0.04em; line-height: 1.2; user-select: all; }
+.event-bank__copy {
+  font: inherit; background: transparent; color: var(--bone); border: 1px solid var(--line-dark); padding: 12px 18px;
+  cursor: pointer; transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+.event-bank__copy:hover { background: var(--bone); color: var(--ink); border-color: var(--bone); }
+.event-bank__copy:focus-visible { outline: 2px solid var(--bone); outline-offset: 2px; }
 
 .event-file { display: flex; align-items: center; gap: 18px; padding: 16px; border: 1px dashed var(--line-dark); cursor: pointer; transition: border-color 0.3s, background-color 0.3s; position: relative; }
 .event-file:hover, .event-file:focus-within { border-color: var(--bone); background: rgba(241, 233, 218, 0.04); }

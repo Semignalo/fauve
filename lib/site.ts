@@ -6,6 +6,7 @@ export const NAV = [
   { href: '/manufacturing', label: 'Private label' },
   { href: '/about', label: 'About' },
   { href: '/perfume-bar', label: 'Perfume Bar' },
+  { href: '/event', label: 'Event' },
   { href: '/find-your-scent', label: 'Find your scent' },
   { href: '/contact', label: 'Contact' },
 ];
